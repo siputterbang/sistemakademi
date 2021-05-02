@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  {%load static%}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <script src="{%static '/vendor/chart.js/dist/chart.js'%}"></script>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="container">
+            <!-- navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">Dashboard</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#">Preferences</a></li>
+                          <li><a class="dropdown-item" href="#">Setting</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            <!-- end-navbar -->
+              <!-- menu jadwal& tugas -->
+              <div class="row row-cols-1 row-cols-md-2 g-4 mt-auto">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                        <!-- jadwal -->
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Kelas</th>
+                                <th scope="col">Mapel</th>
+                                <th scope="col">Jam</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {%for jadwal in jadwalmapel%}
+                              <tr>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td>{{jadwal.id_kelas }}</td>
+                                <td>{{jadwal.id_mapel}}</td>
+                                <td>{{jadwal.jam_pelajaran}}</td>
+                              </tr>
+                              {%endfor%}
+                            </tbody>
+                          </table>
+                          <!-- end-jadwal -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                        <!-- Tugas -->
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Kelas</th>
+                                <th scope="col">Hadir</th>
+                                <th scope="col">Keterangan</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {%for absen in absensi%}
+                              <tr>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td>{{absen.tanggal}}</td>
+                                <td>{{absen.kelas}}</td>
+                                <td>{{absen.kehadiran}}</td>
+                                <td>{{absen.keterangan}}</td>
+                              </tr>
+                              {%endfor%}
+                            </tbody>
+                          </table>
+                          <!-- end-tugas -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end-menu jadwal& tugas-->
+
+              <!-- nav -->
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">7D</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">9G</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">8F</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <!-- keterangan1 -->
+                  <div class="row row-cols-1 row-cols-md-3 g-4 mt-auto">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <canvas id="myChart" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('myChart');
+                            var myChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Sudah Mengkumpul', 'Belum'],
+                                    datasets: [{
+                                        label: '# of Votes',
+                                        data: [12, 19],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132)',
+                                            'rgba(54, 162, 235)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                        ],
+                                        borderWidth: 3
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Murid yang sudah mengumpulkan</h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Kelas</th>
+                                <th scope="col">NIM</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Abi</td>
+                                <td>9G</td>
+                                <td>1097</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Fadli</td>
+                                <td>9G</td>
+                                <td>8265</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Untoro</td>
+                                <td>9G</td>
+                                <td>2736</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td >Dini</td>
+                                <td>34564</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Murid yang belum mengumpulkan</h5>
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Kelas</th>
+                                    <th scope="col">NIM</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Abi</td>
+                                    <td>9G</td>
+                                    <td>1097</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Fadli</td>
+                                    <td>9G</td>
+                                    <td>8265</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Untoro</td>
+                                    <td>9G</td>
+                                    <td>2736</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td >Dini</td>
+                                    <td>34564</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end-keterangan1-->
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                  <!-- keterangan2 -->
+                  <div class="row row-cols-1 row-cols-md-3 g-4 mt-auto">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <canvas id="myChart2" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('myChart2');
+                            var myChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Sudah Mengkumpul', 'Belum'],
+                                    datasets: [{
+                                        label: '# of Votes',
+                                        data: [12, 19],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132)',
+                                            'rgba(54, 162, 235)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                        ],
+                                        borderWidth: 3
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Kehadiran</h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Kelas</th>
+                                <th scope="col">Keterangan</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              {%for absen in absensi%}
+                              <tr>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td>{{absen.tanggal}}</td>
+                                <td>{{absen.kelas}}</td>
+                                <td>{{absen.keterangan}}</td>
+                              </tr>
+                              {%endfor%}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Murid yang belum mengumpulkan</h5>
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Kelas</th>
+                                    <th scope="col">NIM</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Abi</td>
+                                    <td>9G</td>
+                                    <td>1097</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Fadli</td>
+                                    <td>9G</td>
+                                    <td>8265</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Untoro</td>
+                                    <td>9G</td>
+                                    <td>2736</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td >Dini</td>
+                                    <td>34564</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end-keterangan2 -->
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                  <!-- keterangan3 -->
+                  <div class="row row-cols-1 row-cols-md-3 g-4 mt-auto">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <canvas id="myChart3" width="400" height="400"></canvas>
+                            <script>
+                            var ctx = document.getElementById('myChart3');
+                            var myChart = new Chart(ctx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Sudah Mengkumpul', 'Belum'],
+                                    datasets: [{
+                                        label: '# of Votes',
+                                        data: [6, 20],
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132)',
+                                            'rgba(54, 162, 235)',
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                        ],
+                                        borderWidth: 3
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Murid yang sudah mengumpulkan</h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Kelas</th>
+                                <th scope="col">NIM</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Abi</td>
+                                <td>9G</td>
+                                <td>1097</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Fadli</td>
+                                <td>9G</td>
+                                <td>8265</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Untoro</td>
+                                <td>9G</td>
+                                <td>2736</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td >Dini</td>
+                                <td>34564</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Murid yang belum mengumpulkan</h5>
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Kelas</th>
+                                    <th scope="col">NIM</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Abi</td>
+                                    <td>9G</td>
+                                    <td>1097</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">1</th>
+                                    <td>Fadli</td>
+                                    <td>9G</td>
+                                    <td>8265</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">2</th>
+                                    <td>Untoro</td>
+                                    <td>9G</td>
+                                    <td>2736</td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">3</th>
+                                    <td >Dini</td>
+                                    <td>34564</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end-keterangan3 -->
+
+                  <div class="card-body">
+                    <h5 class="card-title">Murid yang diampu</h5>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">Nama</th>
+                          <th scope="col">NIM</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        {%for siswa in murids%}    
+                        <tr>
+                          <th scope="row">{{forloop.counter}}</th>
+                          <td> {{siswa.Nama}}</td>
+                          <td>{{siswa.Nis}}</td>
+                        </tr>
+                        {%endfor%}
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+              <!-- endnaav -->
+
+            
+
+sss
+              {%for siswa in murids%}
+                {{siswa.Nama}}
+                {{siswa.Kelas}}
+                {{siswa.Nis}}
+              {%endfor%}
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="/tool-kit.js"></script>
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+    </div>
+    </body>
+</html>
